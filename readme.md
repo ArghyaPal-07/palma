@@ -1,83 +1,35 @@
-# Hand Effects
+# Palma
 
-Hand Effects is a small project focused on creating interactive, hand-driven visual effects and animations. The goal is to provide a clean starting point for adding stylized effects that respond to hand input, gestures, or custom triggers.
+A browser-based hand playground. Turn an open palm, finger movement, or a two-hand heart into live visual effects. Built with HTML, CSS, Canvas, and MediaPipe Hand Landmarker, with no build step.
 
-## Overview
+## Run locally
 
-This project is designed to be easy to extend and customize. Whether you are building an interactive demo, design prototype, or a lightweight effect system, the structure is meant to help you focus on behavior and visuals without unnecessary complexity.
+From this directory:
 
-## Features
-
-- Hand-based trigger system
-- Reusable effect components
-- Easy customization of colors, timing, and intensity
-- Lightweight and modular structure
-- Suitable for prototyping and iterative design
-
-## Getting Started
-
-1. Clone the repository:
-   ```bash
-   https://github.com/ArghyaPal-07/hand-effects.git
-   cd hand-effects
-   ```
-2. Open the project in your preferred editor or runtime environment.
-3. Install any required dependencies if the project includes them.
-4. Run the main entry point or project startup command for your stack.
-
-## Usage
-
-- Add or configure effect assets in the main project folders.
-- Create or modify hand interaction logic to trigger effects.
-- Tune visual parameters such as size, color, duration, and intensity.
-- Test interaction flow and refine the effect timing for a smoother experience.
-
-## Project Structure
-
-A typical structure for this project may look like this:
-
-```text
-hand-effects/
-├── src/              # Core logic and effect code
-├── assets/           # Visual assets and resources
-├── docs/             # Additional documentation
-├── README.md         # Project overview
-├── package.json      # Dependency metadata (if applicable)
-└── .gitignore        # Ignore generated files
+```sh
+python -m http.server 8080
 ```
 
-If your project layout differs, simply adapt the commands and folder names accordingly.
+Open [localhost:8080](http://localhost:8080). Camera access requires localhost or HTTPS. An internet connection is needed to load the font and the MediaPipe runtime and model on the first camera start.
 
-## Configuration
+## Playground
 
-Most effect behavior can be adjusted by editing the relevant configuration files or script parameters. Common settings include:
+- **Enable camera** starts hand tracking for up to two hands, with 21 landmarks per hand. Stop camera releases the webcam. Loading can be cancelled, and permission and device errors have a retry state.
+- **Explore demo** runs illustrative hand poses without requesting camera access or downloading the tracking model. Demo statistics stay unavailable rather than pretending to be live measurements.
+- The original effects run together: white glowing skeleton and rings, palm HUD and rotation readout, blue energy particles, cyan trails, ambient particles, and the grid and cube. The original two-hand heart gesture automatically draws the pink glowing heart and “Made for You” message in every mode. The gesture buttons select illustrative demo poses.
+- Optional layer switches hide the skeleton, rings, or particles; all are enabled by default. Reset restores the original combination.
+- **Quality** requests 960 × 720 video. **Speed** requests 640 × 480. Both target 30 fps; the camera may negotiate a different resolution or frame rate.
+- Mirror the camera, save a PNG snapshot, or open the preview fullscreen. The gesture guide works with the keyboard and closes with Escape.
 
-- effect duration
-- trigger sensitivity
-- color palette
-- particle count or animation scale
-- activation conditions
+The interface responds to desktop, tablet, and phone widths. It respects reduced-motion preferences. Camera video and hand tracking stay in the browser; snapshots are downloaded only when requested. The existing Vercel Analytics integration remains separate from the camera pipeline.
 
-## Development Notes
+## Files
 
-This project is intended to be flexible. You can extend it by:
+- `index.html` — accessible app layout, controls, and gesture guide.
+- `styles.css` — responsive Palma visual system.
+- `app.js` — controls, camera lifecycle, model loading, and telemetry.
+- `effects.js` — idle illustration and adapter for the original effects.
+- `original-effects.js` — verbatim drawing, smoothing, particle, and gesture functions from the original code.
+- `assets/favicon.svg` — Palma hand mark.
 
-- adding new hand gesture handlers
-- creating additional visual effect variants
-- improving performance and optimization
-- integrating it with other UI or interaction systems
-
-## Contributing
-
-Contributions are welcome. If you want to improve the project:
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Open a pull request with a clear description
-
-
-
-## Contact
-
-For questions or suggestions, open an issue in the repository.
+Deploy these files to any static host with HTTPS. No framework, bundler, or additional runtime dependencies are required. MediaPipe uses GPU inference when available and falls back to CPU.
